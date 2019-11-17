@@ -44,11 +44,11 @@ src = np.array([src1,src2,src3,src4,src5])
 src_map = {112 : src, 224 : src*2}
 
 arcface_src = np.array([
-  [38.2946, 51.6963],
-  [73.5318, 51.5014],
-  [56.0252, 71.7366],
-  [41.5493, 92.3655],
-  [70.7299, 92.2041] ], dtype=np.float32 )
+  [33.2946, 33.6963],
+  [78.5318, 33.5014],
+  [56.0252, 53.7366],
+  [36.5493, 74.3655],
+  [75.7299, 74.2041] ], dtype=np.float32 )
 
 arcface_src = np.expand_dims(arcface_src, axis=0)
 
@@ -63,7 +63,7 @@ def estimate_norm(lmk, image_size = 112, mode='arcface'):
   min_index = []
   min_error = float('inf')
 
-  src = arcface_src
+  src = arcface_src/112*image_size
 
   for i in np.arange(src.shape[0]):
     tform.estimate(lmk, src[i])
@@ -78,7 +78,7 @@ def estimate_norm(lmk, image_size = 112, mode='arcface'):
         min_index = i
   return min_M, min_index
 
-def norm_crop(img, landmark, image_size=112, mode='arcface'):
+def norm_crop(img, landmark, image_size=160, mode='arcface'):
 
   left_eye=[landmark[36][0],landmark[36][1]]
   right_eye = [landmark[45][0],landmark[45][1]]
@@ -96,8 +96,22 @@ def norm_crop(img, landmark, image_size=112, mode='arcface'):
 
 
   M, pose_index = estimate_norm(landmark_five, image_size, mode)
-  warped = cv2.warpAffine(img,M, (image_size, image_size), borderValue = 0.0)
 
+  warped = cv2.warpAffine(img, M, (image_size, image_size), borderValue=127.0)
+
+  full_M=np.row_stack((M,np.asarray([0,0,1])))
+  
+  ###make the label as 3xN matrix
+  label = landmark.T
+  full_label = np.row_stack((label, np.ones(shape=(1, label.shape[1]))))
+  label_rotated = np.dot(full_M, full_label)
+  label_rotated = label_rotated[0:2, :]
+  landmark=label_rotated.T
+
+  for landmarks_index in range(len(landmark)):
+      x_y = landmark[landmarks_index]
+      cv2.circle(warped, (int(x_y[0]), int(x_y[1])), 3,
+                 (100, 222, 222), -1)
 
   cv2.namedWindow('crop_warp',0)
   cv2.imshow('crop_warp',warped)
