@@ -10,6 +10,8 @@ from lib.core.api.facer import FaceAna
 from lib.core.headpose.pose import get_head_pose, line_pairs
 
 
+from lib.core.api.wraper import norm_crop
+
 facer = FaceAna()
 
 def video(video_path_or_cam):
@@ -36,6 +38,9 @@ def video(video_path_or_cam):
 
             #######head pose
             reprojectdst, euler_angle=get_head_pose(landmarks[face_index],img_show)
+
+            norm_crop(img_show,landmarks[face_index])
+
 
             if args.mask:
                 face_bbox_keypoints = np.concatenate(
@@ -68,7 +73,7 @@ def video(video_path_or_cam):
             cv2.namedWindow("masked", 0)
             cv2.imshow("masked", image*pattern)
 
-        key=cv2.waitKey(1)
+        key=cv2.waitKey(15)
         if key==ord('q'):
             return
 
