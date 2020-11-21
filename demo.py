@@ -130,17 +130,17 @@ def images(image_dir):
                 cv2.circle(img_show, (int(x_y[0]), int(x_y[1])), 3,
                            (222, 222, 222), -1)
 
+            cv2.imwrite(image_name, img_show)
+#         cv2.namedWindow("capture", 0)
+#         cv2.imshow("capture", img_show)
 
-        cv2.namedWindow("capture", 0)
-        cv2.imshow("capture", img_show)
+#         if args.mask:
+#             cv2.namedWindow("masked", 0)
+#             cv2.imshow("masked", image*pattern)
 
-        if args.mask:
-            cv2.namedWindow("masked", 0)
-            cv2.imshow("masked", image*pattern)
-
-        key=cv2.waitKey(0)
-        if key==ord('q'):
-            return
+#         key=cv2.waitKey(0)
+#         if key==ord('q'):
+#             return
 
 
 
