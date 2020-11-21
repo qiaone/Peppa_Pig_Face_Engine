@@ -83,7 +83,7 @@ def images(image_dir):
     image_list.sort()
 
 
-    for image_name in image_list:
+    for idx, image_name in enumerate(image_list):
 
         image=cv2.imread(os.path.join(image_dir,image_name))
 
@@ -100,7 +100,7 @@ def images(image_dir):
         facer.reset()
 
         duration=time.time()-star
-        print('one iamge cost %f s'%(duration))
+        print('%d %s time: %fs'%(idx, image_name, duration))
 
         for face_index in range(landmarks.shape[0]):
 
