@@ -124,7 +124,7 @@ class FaceLandmark:
 
 
 
-        cv2.imshow('i am watching u * * %d' % i, crop_image)
+        #cv2.imshow('i am watching u * * %d' % i, crop_image)
 
         return crop_image, [h, w, bbox[1], bbox[0], add]
 
@@ -213,7 +213,7 @@ class FaceLandmark:
             crop_image = cv2.resize(crop_image, (cfg.KEYPOINTS.input_shape[1],
                                                  cfg.KEYPOINTS.input_shape[0]))
 
-            cv2.imshow('i am watching u * * %d' % i, crop_image)
+            #cv2.imshow('i am watching u * * %d' % i, crop_image)
 
 
             if cfg.KEYPOINTS.input_shape[2]==1:
