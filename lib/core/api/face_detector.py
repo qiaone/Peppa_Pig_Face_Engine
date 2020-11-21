@@ -70,7 +70,7 @@ class FaceDetector:
 
             start = time.time()
             bboxes = self.model.inference(image_fornet)
-            print('xx', time.time() - start)
+            #print('xx', time.time() - start)
         else:
             input_shape = (320, 320)
             image_fornet, scale_x, scale_y, dx, dy = self.preprocess(image,
